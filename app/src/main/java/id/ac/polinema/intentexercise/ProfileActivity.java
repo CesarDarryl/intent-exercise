@@ -2,7 +2,10 @@ package id.ac.polinema.intentexercise;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import id.ac.polinema.intentexercise.Model.User;
@@ -12,6 +15,7 @@ import static id.ac.polinema.intentexercise.RegisterActivity.USER_KEY;
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView fullnameText,emailText,homepageText,aboutText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +39,13 @@ public class ProfileActivity extends AppCompatActivity {
         }
     //TO URL
     }
-
+    public void visitHomePage(View view) {
+        String url = homepageText.getText().toString();
+        if(!url.startsWith("http://") && !url.startsWith("https://"))
+        {
+            url = "http://" + url;
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
 }
