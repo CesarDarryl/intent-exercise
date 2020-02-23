@@ -1,12 +1,13 @@
 package id.ac.polinema.intentexercise.Model;
 import  android.os.Parcel;
 import  android.os.Parcelable;
+import android.widget.ImageView;
 
 public class User implements Parcelable
 {
     private String fullname,email,homepage,about;
 
-    public User(String fullname, String email, String homepage, String about) {
+    public User(String fullname, String email, String homepage, String about, ImageView imageAvatar) {
         this.fullname = fullname;
         this.email = email;
         this.homepage = homepage;
