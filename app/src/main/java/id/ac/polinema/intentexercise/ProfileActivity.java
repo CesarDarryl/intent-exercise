@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 import id.ac.polinema.intentexercise.Model.User;
 
@@ -17,10 +21,10 @@ import static id.ac.polinema.intentexercise.RegisterActivity.USER_KEY;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    public static final String IMAGE_KEY = ("Image");
+    private static final String IMAGE_KEY = "image";
+    private static final String TAG = RegisterActivity.class.getCanonicalName();
     private TextView fullnameText,emailText,homepageText,aboutText;
-    private Bitmap bitmap;
-    private ImageView avatar;
+    private ImageView Gambar;
 
 
     @Override
@@ -33,18 +37,25 @@ public class ProfileActivity extends AppCompatActivity {
         emailText = findViewById(R.id.label_email);
         homepageText = findViewById(R.id.label_homepage);
         aboutText = findViewById(R.id.label_about);
-        avatar = findViewById(R.id.image_profile);
+        Gambar = findViewById(R.id.image_profile);
 
+
+        User data = getIntent().getParcelableExtra(USER_KEY);
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
-            User data = getIntent().getParcelableExtra(USER_KEY);
-            fullnameText.setText(data.getFullname());
-            emailText.setText(data.getEmail());
-            homepageText.setText(data.getHomepage());
-            aboutText.setText(data.getAbout());
-            bitmap = getIntent().getParcelableExtra(IMAGE_KEY);
-            avatar.setImageBitmap(bitmap);
+            try {
+                fullnameText.setText(data.getFullname());
+                emailText.setText(data.getEmail());
+                homepageText.setText(data.getHomepage());
+                aboutText.setText(data.getAbout());
+                Bitmap Avatar = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getPathImage());
+                Gambar.setImageBitmap(Avatar);
+            } catch (IOException e){
+                Toast.makeText(this, "Can't load image", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, e.getMessage());
+            }
+
         }
 
         }

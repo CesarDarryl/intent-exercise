@@ -1,4 +1,5 @@
 package id.ac.polinema.intentexercise.Model;
+import android.net.Uri;
 import  android.os.Parcel;
 import  android.os.Parcelable;
 import android.widget.ImageView;
@@ -6,12 +7,34 @@ import android.widget.ImageView;
 public class User implements Parcelable
 {
     private String fullname,email,homepage,about;
+    Uri pathImage;
 
-    public User(String fullname, String email, String homepage, String about, ImageView imageAvatar) {
+    public User(String fullname, String email, String homepage, String about, Uri pathImage) {
         this.fullname = fullname;
         this.email = email;
         this.homepage = homepage;
         this.about = about;
+        this.pathImage = pathImage;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public Uri getPathImage() {
+        return pathImage;
     }
 
     @Override
@@ -25,6 +48,7 @@ public class User implements Parcelable
         dest.writeString(this.email);
         dest.writeString(this.homepage);
         dest.writeString(this.about);
+        dest.writeParcelable(this.pathImage, flags);
     }
 
     protected User(Parcel in) {
@@ -32,6 +56,7 @@ public class User implements Parcelable
         this.email = in.readString();
         this.homepage = in.readString();
         this.about = in.readString();
+        this.pathImage = in.readParcelable(Uri.class.getClassLoader());
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -45,36 +70,4 @@ public class User implements Parcelable
             return new User[size];
         }
     };
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getHomepage() {
-        return homepage;
-    }
-
-    public void setHomepage(String homepage) {
-        this.homepage = homepage;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
 }

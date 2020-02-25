@@ -17,15 +17,16 @@ import java.io.IOException;
 import id.ac.polinema.intentexercise.Model.User;
 
 public class RegisterActivity extends AppCompatActivity {
-    private static final String TAG = RegisterActivity.class.getCanonicalName();
     private static final int GALERY_REQUEST_CODE = 1;
     public static final String IMAGE_KEY = "image";
+    private static final String TAG = RegisterActivity.class.getCanonicalName();
+    private ImageView imageAvatar;
+    private Bitmap bitmap = null;
+    private Uri imageUri;
 
     //Create KEY : about me, fullname, email, homepage
     public static final String USER_KEY = "user";
     private TextView fullNameText,emailText,passwordText,conf_passwordText,homePageText,aboutText;
-    private ImageView imageAvatar;
-    private Bitmap bitmap = null;
     //END
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (requestCode == GALERY_REQUEST_CODE) {
             if (data != null) {
                 try {
-                    Uri imageUri = data.getData();
+                    imageUri = data.getData();
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                     imageAvatar.setImageBitmap(bitmap);
                 } catch (IOException e) {
@@ -70,23 +71,26 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void handleSubmit(View view) {
         //
-
         String fullname = fullNameText.getText().toString();
         String email = emailText.getText().toString();
         String homePage = homePageText.getText().toString();
         String about = aboutText.getText().toString();
         String password = passwordText.getText().toString();
         String conf_password = conf_passwordText.getText().toString();
+        Uri path = imageUri;
 
-        User user = new User(fullname,email,homePage,about,imageAvatar);
+//        imageAvatar.buildDrawingCache();
+//        Bitmap avatar =  imageAvatar.getDrawingCache();
+//
+        User user = new User(fullname,email,homePage,about, path);
         Intent intent = new Intent(this,ProfileActivity.class);
         //Confirmation Password
-        if (!fullname.equals("") && !email.equals("") && !homePage.equals("") && !about.equals(""))
+        if (!fullname.isEmpty() && !email.isEmpty() && !homePage.equals("") && !about.equals(""))
         {
             if(password.equals(conf_password))
             {
-                intent.putExtra(IMAGE_KEY,bitmap);
                 intent.putExtra(USER_KEY,user);
+//                intent.putExtra(IMAGE_KEY,avatar);
                 startActivity(intent);
             }else
                 {
